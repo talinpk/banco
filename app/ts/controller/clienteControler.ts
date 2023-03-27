@@ -1,60 +1,71 @@
-class ClienteController {
+class ClienteController{
+
     private _inputNome: HTMLInputElement;
     private _inputCpf: HTMLInputElement;
-    private _inputConta: HTMLInputElement;
+    private _selecionarConta: HTMLSelectElement;
     private _clientes: Clientes;
+    private _contas: Contas;
 
-    constructor() {
-        this._inputNome =
-            document.querySelector("#nome");
-        this._inputCpf =
-            document.querySelector("#cpf");
-        this._inputConta =
-            document.querySelector("#conta");
+    constructor(){
+        this._inputNome = <HTMLInputElement>document.querySelector("#nome");
+        this._inputCpf = <HTMLInputElement>document.querySelector("#cpf");
+        this._selecionarConta = <HTMLSelectElement>document.querySelector("#tipoConta");
         this._clientes = new Clientes();
+        this._contas = new Contas();
     }
 
-    inserir(evento: Event): void {
-        
+    inserir(evento: Event){
         evento.preventDefault();
-        
-        let conta: Conta | undefined = contaController.pesquisarConta(this._inputConta.value);
-        
-        if (conta) {
-            const cliente: Cliente = new Cliente(this._inputNome.value, this._inputCpf.value, conta);
+        const numero: string = Math.floor(Math.random() * 1000).toString();
+        let tipoDeConta: string = this._selecionarConta.options[this._selecionarConta.selectedIndex].value;
+        let cliente: Cliente;
+        let conta: Conta;
+
+        switch(tipoDeConta) {
+            case "poupança":
+                conta = new Poupanca(numero, 0);
+                cliente = new Cliente(this._inputNome.value, this._inputCpf.value, <Poupanca>conta);
+                break;
             
-            this._clientes.inserir(cliente);
-            this.inserirClienteNoHTML(cliente);
+            case "bonificada":
+                conta = new ContaBonificada(numero, 0);
+                cliente = new Cliente(this._inputNome.value, this._inputCpf.value, <ContaBonificada>conta);
+                break;
 
-        } else {
-            alert("Conta não encontrada!");
-        }
-        
+            default:
+                conta = new Conta(numero, 0);
+                cliente = new Cliente(this._inputNome.value, this._inputCpf.value, conta);     
     }
+    this._contas.inserir(conta);
+    this._clientes.inserir(cliente);
+    this._inputNome.value = "";
+    this._inputCpf.value = "";
+    this.inserirHTML(cliente);
 
-    listar(): void {
-        this._clientes.listar().forEach(
-            cliente => {
-                this.inserirClienteNoHTML(cliente);
-            }
-        );
-    }
+}
 
-    inserirClienteNoHTML(cliente: Cliente): void {
-        const elementoP: HTMLParagraphElement = document.createElement('p');
-        elementoP.textContent = cliente.toString();
-        const botaoApagar: HTMLButtonElement = document.createElement('button');
+    inserirHTML(cliente: Cliente){
+        const elementoP = document.createElement('p');
+        elementoP.textContent = `Nome: ${cliente.nome}, CPF: ${cliente.cpf}, Conta: ${cliente.conta}`;
+        const botaoApagar = document.createElement('button');
         botaoApagar.textContent = 'X';
-
         botaoApagar.addEventListener('click',
             (event) => {
                 console.log('removendo cliente ' + cliente.toString());
-                this._clientes.remover(cliente.cpf);
-                (<HTMLButtonElement>event.target).parentElement.remove();
+                this._contas.remover(cliente.cpf);
+                (<Element>event.target).parentElement.remove();
             }
-        );
-
+            );
         elementoP.appendChild(botaoApagar);
         document.body.appendChild(elementoP);
     }
+
+    listar(){ 
+        this._clientes.listar().forEach(
+            cliente => {
+                this.inserirHTML(cliente);
+            }
+        );
+    }
+
 }

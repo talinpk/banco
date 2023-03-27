@@ -1,27 +1,19 @@
-class ClienteController {
+class ClienteControler {
     constructor() {
-        this._inputNome =
+        this.inputNome =
             document.querySelector("#nome");
-        this._inputCpf =
+        this.inputCPF =
             document.querySelector("#cpf");
-        this._inputConta =
-            document.querySelector("#conta");
-        this._clientes = new Clientes();
+        this.clientes = new Clientes();
     }
     inserir(evento) {
         evento.preventDefault();
-        let conta = contaController.pesquisarConta(this._inputConta.value);
-        if (conta) {
-            const cliente = new Cliente(this._inputNome.value, this._inputCpf.value, conta);
-            this._clientes.inserir(cliente);
-            this.inserirClienteNoHTML(cliente);
-        }
-        else {
-            alert("Conta não encontrada!");
-        }
+        let novaConta = new Cliente(this.inputNome.value, this.inputCPF.value, c1);
+        this.clientes.inserir(novaConta);
+        this.inserirClienteNoHTML(novaConta);
     }
     listar() {
-        this._clientes.listar().forEach(cliente => {
+        this.clientes.listar().forEach(cliente => {
             this.inserirClienteNoHTML(cliente);
         });
     }
@@ -32,7 +24,7 @@ class ClienteController {
         botaoApagar.textContent = 'X';
         botaoApagar.addEventListener('click', (event) => {
             console.log('removendo cliente ' + cliente.toString());
-            this._clientes.remover(cliente.cpf);
+            this.clientes.remover(cliente.cpf);
             event.target.parentElement.remove();
         });
         elementoP.appendChild(botaoApagar);
