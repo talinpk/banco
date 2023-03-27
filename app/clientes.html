@@ -8,57 +8,37 @@
     <link rel="stylesheet" href="slyle.css">
 </head>
 <body>
-
-    <h1 class="text-center">Clientes</h1>
-    
-    <div id="mensagemView"></div>
-    
-    <form class="form">
-    
-        <div class="form-group">
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" class="form-control" required autofocus/>
-        </div>
-    
-        <div class="form-group">
-            <label for="conta">CPF</label>
-            <input type="text" id="cpf" class="form-control" required/>
-        </div>
-    
-        <div class="form-group">
-            <label for="conta">Número da Conta</label>
-        </div>
-    
-        <button class="btn btn-primary" type="submit" onclick="clienteController.inserir(event)">Inserir</button>
+    <h1>Cadastro de Clientes</h1>
+    <form>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+        <br>
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" name="cpf" required>
+        <br>
+        <label for="tipoConta">Tipo de Conta:</label>
+        <select id="tipoConta" name="tipoConta">
+            <option value="corrente">Conta Corrente</option>
+            <option value="poupança">Poupança</option>
+            <option value="bonificada">Conta Bonificada</option>
+        </select>
+        <br>
+        <button type="button" onclick="clienteController.inserir(event)">Inserir Cliente</button>
     </form>
-    
     <br>
+    <h2>Lista de Clientes</h2>
+    <div id="lista-clientes"></div>
     <br>
-    
-    <table>
-        <thead>
-        <tr>
-            <th>Nome</th>
-            <th>CPF</th>
-            <th>Conta</th>
-        </tr>
-        </thead>
-    
-        <tbody>
-        </tbody>
-    
-        <tfoot>
-        </tfoot>
-    </table>
+    <form>
+        <label for="lista-clientes">lista-clientes</label>
+    </form>
     <script src="js/model/cliente.js"></script>
     <script src="js/model/clientes.js"></script>
     <script src="js/model/conta.js"></script>
     <script src="js/model/conta-bonificada.js"></script>
-    <script src="js/model/cliente-especial.js"></script>
     <script src="js/model/poupanca.js"></script>
     <script src="js/model/contas.js"></script>
-    <script src="js/controller/conta-controller.js"></script>
-    <script src="js/controller/clienteController.js"></script>
+    <script src="js/controller/cliente-controller.js"></script>
     <script src="js/app.js"></script>
-    </body>
+</body>
 </html>
